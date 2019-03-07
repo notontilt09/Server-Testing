@@ -76,9 +76,9 @@ describe('server.js', () => {
         })
 
         // not working, giving 204 when it should be 500
-        it('should return 500 status if we try to delete non-existant item', async () => {
+        it('should return 404 status if we try to delete non-existant item', async () => {
             const response = await request(server).delete('/100')
-            expect(response.status).toBe(500);
+            expect(response.status).toBe(404);
         });
     });
 });

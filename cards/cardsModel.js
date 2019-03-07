@@ -24,5 +24,5 @@ function getCard(id) {
 }
 
 function remove(id) {
-    return db('cards').del().where({id})
+    return db('cards').where({id}).del()
 }

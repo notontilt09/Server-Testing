@@ -23,8 +23,12 @@ server.post('/', async (req, res) => {
 server.delete('/:id', async (req, res) => {
     try {
         const id = req.params.id
-        await Cards.remove(id)
-        res.status(204).end()
+        const deleted = await Cards.remove(id)
+        if (deleted > 0) {
+            res.status(204).end()
+        } else {
+            res.status(404).json({message: `No card with id ${req.params.id} exists}`})
+        }
     } catch (error) {
         res.status(500).json(error)
     }
