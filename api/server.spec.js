@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const request = require('supertest');
+const db = require('../data/dbConfig.js');
 
 const server = require('./server.js');
 
@@ -26,6 +27,22 @@ describe('server.js', () => {
             const response = await request(server).get('/');
 
             expect(response.body).toEqual({ api: 'running' });
+        });
+    });
+
+    describe('POST /', () => {
+        afterEach(async () => {
+            await db('cards').truncate();
+        })
+
+        it('should return the new card added with id and name', async () => {
+            const response = await request(server).post('/').send({name: '3 of diamonds'});
+            expect(response.body).toEqual({"id": 1, "name": "3 of diamonds"});
+        });
+
+        it('should return a status 201 when successful ', async () => {
+            const response = await request(server).post('/').send({name: '3 of diamonds'});
+            expect(response.status).toBe(201);
         });
     });
 });
