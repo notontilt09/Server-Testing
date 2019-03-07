@@ -20,4 +20,14 @@ server.post('/', async (req, res) => {
     }
 });
 
+server.delete('/:id', async (req, res) => {
+    try {
+        const id = req.params.id
+        await Cards.remove(id)
+        res.status(204).end()
+    } catch (error) {
+        res.status(500).json(error)
+    }
+});
+
 module.exports = server;
