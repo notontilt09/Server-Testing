@@ -55,8 +55,30 @@ describe('server.js', () => {
         it('should return successful 204 status', async () => {
             // first add a card to be deleted
             await Cards.insert({name: 'test'})
+            // hit the delete endpoint with the id of the resource just created
             const response = await request(server).delete('/1');
+            // expect status to be 204
             expect(response.status).toBe(204);
+        });
+        
+        it('should delete 1 item from the db', async () => {
+            // add a card to be delete
+            await Cards.insert({name: 'test'})
+            // get the length of all the Cards
+            const cardsAfterAdd = await Cards.getAll();
+            const lengthAfterAdd = cardsAfterAdd.length;
+            // hit the remove endpoind wit the correct id
+            await request(server).delete('/1');
+            const cardsAfterDelete = await Cards.getAll();
+            const lengthAfterDelete = cardsAfterDelete.length;
+            // expect length of all Cards to be 1 less then length before the deletion
+            expect(lengthAfterDelete).toBe(lengthAfterAdd - 1);
+        })
+
+        // not working, giving 204 when it should be 500
+        it('should return 500 status if we try to delete non-existant item', async () => {
+            const response = await request(server).delete('/100')
+            expect(response.status).toBe(500);
         });
     });
 });
