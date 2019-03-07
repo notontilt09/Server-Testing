@@ -1,5 +1,7 @@
 const express = require('express');
 
+const cards = require('../cards/cardsModel.js');
+
 const server = express();
 
 server.use(express.json());
