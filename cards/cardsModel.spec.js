@@ -14,17 +14,11 @@ describe('cards model', () => {
         });
         
         it('should add multiple cards to database', async () => {
-            await Cards.insert({name: '3 of diamonds'});
-            await Cards.insert({name: '5 of diamonds'});
+            await Cards.insert([{name: '3 of diamonds'}, {name: '5 of diamonds'}]);
             
             const cards = await Cards.getAll();
             expect(cards.length).toBe(2);
             
-        });
-        
-        it.skip('should throw error if duplicate card added', async () => {
-            await Cards.insert({name: '3 of diamonds'});
-            expect(await Cards.insert({name: '3 of diamonds'})).toThrow();
         });
     });
     
